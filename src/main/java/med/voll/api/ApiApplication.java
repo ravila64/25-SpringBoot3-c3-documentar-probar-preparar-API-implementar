@@ -10,4 +10,9 @@ public class ApiApplication {
 		SpringApplication.run(ApiApplication.class, args);
 	}
 
+	//@Override
+	public void run(String... args) throws Exception {
+		System.out.println("welcome app spring boot-3, documentar, probar API e implementar");
+	}
+
 }
