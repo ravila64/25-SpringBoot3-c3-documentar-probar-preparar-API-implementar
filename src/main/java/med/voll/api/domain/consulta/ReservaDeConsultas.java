@@ -25,12 +25,16 @@ public class ReservaDeConsultas {
       if(datos.idMedico()!=null && !medicoRepository.existsById(datos.idMedico())){
          throw new ValidacionException("No existe un medico");
       }
+      // validaciones
+
+
       // vamos verificar un medico si se paso como null y elegir medico
       var medico = elegirMedico(datos);
       //var medico = medicoRepository.findById(datos.idMedico()).get();
       // get() trae el objeto y no optional
       var paciente = pacienteRepository.findById(datos.idPaciente()).get();
-      var consulta = new Consulta(null, medico, paciente, datos.fecha());
+      //var consulta = new Consulta(null, medico, paciente, datos.fecha());
+      var consulta = new Consulta(null, medico, paciente, datos.fecha(), null);
       consultaRepository.save(consulta);
    }
 
@@ -46,4 +50,13 @@ public class ReservaDeConsultas {
       return medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(datos.especialidad(),
             datos.fecha());
    }
+
+   public void cancelar(DatosCancelamientoConsulta datos) {
+      if (!consultaRepository.existsById(datos.idConsulta())) {
+         throw new ValidacionException("Id de la consulta informado no existe!");
+      }
+      var consulta = consultaRepository.getReferenceById(datos.idConsulta());
+      consulta.cancelar(datos.motivo());
+   }
+
 }
