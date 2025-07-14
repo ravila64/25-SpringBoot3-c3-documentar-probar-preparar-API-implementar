@@ -14,23 +14,23 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
     // en JPQL se nombra la clase no el archivo, ej Medico, Consulta
     @Query("""
-          select m from Medico m
-          where m.activo=true and
-          m.especialidad = :especialidad
-          and m.id not in(
-            select c.medico.id from Consulta c
-            where  c.fecha = :fecha
-          )
-          order by rand()
-          limit 1
-          """)
+            select m from Medico m
+            where m.activo = true
+            and m.especialidad = :especialidad
+            and m.id not in(
+                select c.medico.id from Consulta c
+                where c.fecha = :fecha
+            )
+            order by rand()
+            limit 1
+            """)
     Medico elegirMedicoAleatorioDisponibleEnLaFecha(Especialidad especialidad, LocalDateTime fecha);
 
-   @Query("""
-         select m.activo from medico m 
-         where m.id = :idMedico
-         """)
-   boolean findActivoById(Long idMedico);
+    @Query("""
+            select m.activo from Medico m
+            where m.id = :idMedico
+            """)
+    boolean findActivoById(Long idMedico);
 
-   // findByIs(), ya lo tiene por defecto el repository, Jpa
+   // findById(), ya lo tiene por defecto el repository, Jpa
 }
