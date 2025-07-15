@@ -15,7 +15,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     // en JPQL se nombra la clase no el archivo, ej Medico, Consulta
     @Query("""
             select m from Medico m
-            where m.activo = true
+            where m.activo = TRUE
             and m.especialidad = :especialidad
             and m.id not in(
                 select c.medico.id from Consulta c
