@@ -12,7 +12,7 @@ public class ValidadorFueraHorarioConsultas implements ValidadorDeConsultas {
       var fechaConsulta = datos.fecha();
       var domingo = fechaConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY);
       var horarioAntesDeAperturaClinica = fechaConsulta.getHour() < 7;
-      var horarioDespuesDeCierreClinica = fechaConsulta.getHour() < 18;
+      var horarioDespuesDeCierreClinica = fechaConsulta.getHour() > 18;
       if(domingo || horarioAntesDeAperturaClinica || horarioDespuesDeCierreClinica){
          throw new ValidacionException("Horario fuera de citas de atencion en clinica");
       }

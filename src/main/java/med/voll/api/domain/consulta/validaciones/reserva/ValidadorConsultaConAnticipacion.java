@@ -1,14 +1,13 @@
-package med.voll.api.domain.consulta.validaciones.cancelamiento;
+package med.voll.api.domain.consulta.validaciones.reserva;
 
 import med.voll.api.domain.ValidacionException;
 import med.voll.api.domain.consulta.DatosReservaConsulta;
-import med.voll.api.domain.consulta.validaciones.reserva.ValidadorDeConsultas;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@Component("ValidadorConsultaConAnticipacionCancelamiento")
+@Component("ValidadorConsultaConAnticipacionReserva")
 public class ValidadorConsultaConAnticipacion implements ValidadorDeConsultas {
    public void validar(DatosReservaConsulta datos) {
       var fechaConsulta = datos.fecha();

@@ -32,9 +32,6 @@ public class ReservaDeConsultas {
          throw new ValidacionException("No existe un medico");
       }
 
-//      if(!pacienteRepository.existsById(datos.idPaciente())){
-//         throw new ValidacionException("No existe un paciente ");
-//      }
       // validaciones, recorrer la lista y ejecutar validar, de todos los validadores
       validadores.forEach(v->v.validar(datos));
 
