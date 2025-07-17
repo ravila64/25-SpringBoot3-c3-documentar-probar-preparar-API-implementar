@@ -20,32 +20,44 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+   @Autowired
+   private SecurityFilter securityFilter;
 
-    // trate de quitar el lambda, quedo pendiente
-    //Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> autorizeHttpRequests;
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       return http.csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                    // liberado para springDocs  // me sale error swagger-io
-                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html","/swagger-ui/**").permitAll();
-                    req.anyRequest().authenticated();
-                })
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+   // trate de quitar el lambda, quedo pendiente
+   //Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> autorizeHttpRequests;
+   //  @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//       return http.csrf(csrf -> csrf.disable())
+//                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(req -> {
+//                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+//                    // liberado para springDocs  // me sale error swagger-io
+//                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html","/swagger-ui/**").permitAll();
+//                    req.anyRequest().authenticated();
+//                })
+//                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+//                .build();
+//    }
+   @Bean
+   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+      return http.csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(req -> {
+               req.requestMatchers(HttpMethod.POST, "/login").permitAll()
+                     .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
+               req.anyRequest().authenticated();
+            })
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+   }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+   @Bean
+   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+      return configuration.getAuthenticationManager();
+   }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+   @Bean
+   public PasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder();
+   }
 }

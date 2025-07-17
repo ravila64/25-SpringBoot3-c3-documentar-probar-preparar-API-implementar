@@ -31,6 +31,7 @@ public class TokenService {
         }
     }
 
+    // Aqui se colocar GMT para colombia en -05:00, zona horaria
     private Instant fechaExpiracion() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-05:00"));
     }

@@ -28,6 +28,10 @@ public class ReservaDeConsultas {
 
    public DatosDetalleConsulta reservar(DatosReservaConsulta datos){
 
+      if(!pacienteRepository.existsById(datos.idPaciente())){
+         throw new ValidacionException("No existe un paciente con el id informado");
+      }
+
       if(datos.idMedico()!=null && !medicoRepository.existsById(datos.idMedico())){
          throw new ValidacionException("No existe un medico");
       }
