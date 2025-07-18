@@ -1,4 +1,3 @@
-use vollmed_api2;
 create table consultas(
     id bigint not null auto_increment,
     medico_id bigint not null,
