@@ -36,16 +36,34 @@ class MedicoRepositoryTest {
    @DisplayName("Deberia devolver null cuando el medico buscado existe pero no esta disponible")
    void elegirMedicoAleatorioDisponibleEnLaFechaEscenario1() {
       // busca lunes siguiente de la fecha actual a las 10am
+      // given  o arrange
       var lunesSiguienteAlas10Am = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
       var medico = registrarMedico("Medico1","medico@algo.com", "123456", Especialidad.CARDIOLOGIA);
       var paciente = registrarPaciente("Paciente1","paciente1@xyz.com", "123456");
       registrarConsulta(medico,paciente,lunesSiguienteAlas10Am,MotivoCancelamiento.OTROS);
+      //when o act
       var medicoLibre = medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(Especialidad.CARDIOLOGIA, lunesSiguienteAlas10Am);
+      //then o assert
       assertThat(medicoLibre).isNull();
+   }
+   // nota se hace rollback apenas termina el test, quedando base de datps sin los datos de la ultima prueba
+   @Test
+   @DisplayName("Deberia devolver medico cuando medico esta disponible en esa fecha")
+   void elegirMedicoAleatorioDisponibleEnLaFechaEscenario2() {
+      // given  o arrange = dado un cierto contexto, O ARREGLO
+      // busca lunes siguiente de la fecha actual a las 10am
+      var lunesSiguienteAlas10Am = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
+      var medico = registrarMedico("Medico1","medico@algo.com", "123456", Especialidad.CARDIOLOGIA);
+      //var paciente = registrarPaciente("Paciente1","paciente1@xyz.com", "123456");
+      //registrarConsulta(medico,paciente,lunesSiguienteAlas10Am,MotivoCancelamiento.OTROS);
+      //when o act  = cuando ejecuto, O ACTO
+      var medicoLibre = medicoRepository.elegirMedicoAleatorioDisponibleEnLaFecha(Especialidad.CARDIOLOGIA, lunesSiguienteAlas10Am);
+      //then o assert = entonces muestro resultado O ACERTAR
+      assertThat(medicoLibre).isEqualTo(medico);
    }
 
    private void registrarConsulta(Medico medico, Paciente paciente, LocalDateTime fecha, MotivoCancelamiento motivoCancelamiento) {
-      em.persist(new Consulta(null, medico, paciente,fecha,motivoCancelamiento));   // param null, medico, paciente, fecha => dice redundante
+      em.persist(new Consulta(null, medico, paciente,fecha,null));   // param null, medico, paciente, fecha => dice redundante
    }
 
    private Medico registrarMedico(String nombre, String email,
